@@ -13,7 +13,7 @@ from sklearn.model_selection import KFold
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier , RadiusNeighborsClassifier
-
+import pickle
 import numpy as np
 from numpy import linalg as LA
 
@@ -23,7 +23,7 @@ def cosine(X, Y):
 	norm = LA.norm(X) * LA.norm(Y)
 	return np.dot(X, Y.T)/norm
 
-csv = pd.read_csv('data-bandpassed-theta-alpha-beta-gamma-pca-63DetikAllchannel-rounded-smote-Arousal.csv').values
+csv = pd.read_csv('data-bandpassed-theta-alpha-beta-gamma-pca-60DetikAllchannel-rounded-smote-arousal.csv').values
 print("done reading data")
 csv = csv.T
 n_features = 128
@@ -31,6 +31,7 @@ n_label = 1
 data = csv[:n_features].T
 label = csv[n_features:(n_features+n_label)]
 # label = label[0]
+max_acc = 0
 label = label.T
 print(label)
 arr = np.arange(data.shape[0])
@@ -43,11 +44,12 @@ if __name__ == '__main__':
 	start_time = time.time()
 	print("start learning")
 	# model = (RandomForestClassifier(criterion='gini',min_samples_leaf =1,min_samples_split=(2*x),n_jobs =-1,bootstrap =True,n_estimators =10,verbose=0))
-	model = BaggingClassifier(base_estimator=KNeighborsClassifier(weights='uniform',p=2,n_neighbors=1,leaf_size=128,algorithm='kd_tree'),max_samples =0.8,n_estimators=200,n_jobs=-1,bootstrap_features=True,warm_start=False)
-	# model = KNeighborsClassifier(weights='uniform',p=2,n_neighbors=1,leaf_size=128,algorithm='auto',n_jobs=-1)
+	# model = BaggingClassifier(base_estimator=KNeighborsClassifier(weights='uniform',p=2,n_neighbors=1,leaf_size=128,algorithm='kd_tree'),max_samples =0.5,n_estimators=200,n_jobs=-1,bootstrap_features=True,warm_start=False)
+	model = KNeighborsClassifier(weights='uniform',p=2,n_neighbors=1,leaf_size=128,algorithm='kd_tree',n_jobs=-1)
 	# model = RadiusNeighborsClassifier(weights='uniform',p=2,radius=10000.0,leaf_size=128,algorithm='auto',n_jobs=-1)
 	kf = KFold(n_splits=10)
 	scores = []
+	save_model = None
 	conf_matrix = np.array([[0,0],[0,0]])
 	label= label.ravel()
 	for train_index, test_index in kf.split(data):
@@ -56,8 +58,20 @@ if __name__ == '__main__':
 		y_train, y_test = label[train_index], label[test_index]
 		model.fit(X_train,y_train)
 		y_pred = model.predict(X_test)
+		# proba = model.predict_proba(X_test)
+		# print(proba)
 		score = model.score(X_test,y_test)
+		print(score)
 		scores = np.append(scores,score)
+		if max_acc < score:
+			save_model = model
+			max_acc = score
+			test_set = np.vstack(([np.zeros(n_features+n_label)],np.hstack((X_test,np.array([y_test]).T))))
+			train_set = np.vstack(([np.zeros(n_features+n_label)],np.hstack((X_train,np.array([y_train]).T))))
+			filename = 'arousal.model'
+			pickle.dump(model,open(filename, 'wb'))
+			np.savetxt('train_set.csv', train_set, delimiter=',')
+			np.savetxt('test_set.csv', test_set, delimiter=',')
 		confuscious_matrix = confusion_matrix(y_test, y_pred)
 		conf_matrix = conf_matrix + confuscious_matrix
 

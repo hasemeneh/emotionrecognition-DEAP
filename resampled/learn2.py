@@ -14,14 +14,14 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
-csv = pd.read_csv('data-bandpassed-alpha-beta-gamma-pca-63DetikAllchannel-rounded.csv').values
+csv = pd.read_csv('data-bandpassed-theta-alpha-beta-gamma-pca-60DetikAllchannel-rounded-smote-arousal.csv').values
 print("done reading data")
 csv = csv.T
-n_features = 96
+n_features = 128
 n_label = 1
 data = csv[:n_features].T
 label = csv[n_features:(n_features+n_label)]
-label = label[0]
+# label = label[0]
 label = label.T
 print(label)
 arr = np.arange(data.shape[0])
@@ -34,7 +34,8 @@ if __name__ == '__main__':
 	start_time = time.time()
 	print("start learning")
 	# model = (RandomForestClassifier(criterion='gini',min_samples_leaf =1,min_samples_split=(2*x),n_jobs =-1,bootstrap =True,n_estimators =10,verbose=0))
-	model = QuadraticDiscriminantAnalysis(store_covariance=True,reg_param=1.0e-17,tol=1.0e-28)
+	# model = QuadraticDiscriminantAnalysis(store_covariance=True,reg_param=1.0e-17,tol=1.0e-28)
+	model = BaggingClassifier(base_estimator=QuadraticDiscriminantAnalysis(store_covariance=True,reg_param=1.0e-17,tol=1.0e-28),max_samples =0.9,n_estimators=200,n_jobs=-1,bootstrap_features=True,warm_start=False)
 	kf = KFold(n_splits=10)
 	scores = []
 	conf_matrix = np.array([[0,0],[0,0]])

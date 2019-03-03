@@ -1,0 +1,18 @@
+﻿<Window x:Class="EmoRecoClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:EmoRecoClient"
+        mc:Ignorable="d"
+        Title="EmoRecoClient" Height="227.711" MaxHeight="230"   MinHeight="200" Width="440.596">
+	<Grid>
+		<Button Content="Prediksi" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="93" Click="Button_Click_1"/>
+		<Button Content="Pilih Data" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Width="93" Click="Button_Click"/>
+		<Label Content="File" HorizontalAlignment="Left" Margin="10,21,0,0" VerticalAlignment="Top" Width="75"/>
+		<Label Content="Jumlah Data" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,79,0,0"/>
+		<TextBox Name="namaFile" IsReadOnly="True" Height="32" Margin="106,15,108,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+		<TextBox Name="jmlData" IsReadOnly="True" Height="33" Margin="106,72,108,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+	</Grid>
+</Window>

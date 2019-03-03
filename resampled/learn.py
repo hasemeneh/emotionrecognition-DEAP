@@ -15,10 +15,10 @@ from ChatbotCode.svm import cos_sim, my_kernel
 from sklearn.neighbors import KNeighborsClassifier
 
 
-csv = pd.read_csv('data.csv').values
+csv = pd.read_csv('data-bandpassed-theta-alpha-beta-gamma-pca-60DetikAllchannel-rounded-smote-valence.csv').values
 print("done reading data")
 csv = csv.T
-n_features = 178
+n_features = 128
 n_label = 1
 data = csv[:n_features].T
 label = csv[n_features:(n_features+n_label)]
@@ -34,12 +34,12 @@ if __name__ == '__main__':
 	start_time = time.time()
 	print("start learning")
 	# model = (RandomForestClassifier(criterion='gini',min_samples_leaf =1,min_samples_split=(200),n_jobs =-1,bootstrap =True,n_estimators =100,verbose=0))
-	model = RandomForestClassifier(min_samples_split=600,n_jobs =-1,n_estimators =20)
+	# model = RandomForestClassifier(min_samples_split=600,n_jobs =-1,n_estimators =20)
 	# model = KNeighborsClassifier(weights='uniform',p=1,n_neighbors=1,leaf_size=5,algorithm='kd_tree',n_jobs=-1)
-	# model = SVC(kernel='rbf',C=2.5,tol=1e-4,gamma='scale')
+	model = SVC(kernel='rbf',C=2.5,tol=1e-4,gamma='scale')
 	kf = KFold(n_splits=10)
 	scores = []
-	conf_matrix = np.zeros((5,5))
+	conf_matrix = np.zeros((2,2))
 	label= label.ravel()
 	for train_index, test_index in kf.split(data):
 		# print("TRAIN:", train_index, "TEST:", test_index)
@@ -48,11 +48,11 @@ if __name__ == '__main__':
 		model.fit(X_train,y_train)
 		y_pred = model.predict(X_test)
 		score = model.score(X_test,y_test)
+		print(score)
 		scores = np.append(scores,score)
 		confuscious_matrix = confusion_matrix(y_test, y_pred)
 		conf_matrix = conf_matrix + confuscious_matrix
 
-	
 
 	end_time = time.time()
 	print "Random Forest Arousal", scores
@@ -62,5 +62,3 @@ if __name__ == '__main__':
 	print "max" , np.amax(scores)
 	print "min" , np.amin(scores)
 	print(conf_matrix.astype(int))
-	scores = cross_val_score(model, data, label, cv=10)
-	print(scores)

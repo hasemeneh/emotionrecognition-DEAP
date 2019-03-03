@@ -63,6 +63,10 @@ def dwt(data, have_header=True):
 
 def butter_bandpass_filter(data, lowcut, highcut, sampleRate, order=2):
 	b, a = butter_bandpass(lowcut, highcut, sampleRate, order=order)
+	print("ukuran b ",b.shape)
+	print("data b ",b)
+	print("ukuran a ",a.shape)
+	print("data a ",a)
 	y = lfilter(b, a, data.astype(np.float))
 	return y
 
@@ -95,17 +99,6 @@ def bandpassX(data, have_header=True):
 	data = data.T
 	bpass = np.zeros(len(data[0]))
 	bpassABG = []
-	cutoff=[1,4,8,12,30]
-	#print len(data.T[0])	
-	# for column in data:
-	# 	bps = butter_bandpass_filter(column[have_header:],1,30,128,2)
-	# 	bpass= np.vstack((bpass, np.array(bps)))
-	
-	# bpassX = np.zeros(len(data[0])-1)
-	# for column in data:
-	# 	bps = butter_bandpass_filter(column[have_header:],0,4,128,2)
-	# 	bpassX= np.vstack((bpassX, np.array(bps)))
-	# bpassABG.append(bpassX[1:].T)
 	bpassX = np.zeros(len(data[0]))
 	for column in data:
 		bps = butter_bandpass_filter(column,4,7,128,2)
@@ -126,14 +119,5 @@ def bandpassX(data, have_header=True):
 		bps = butter_bandpass_filter(column,31,45,128,2)
 		bpassX= np.vstack((bpassX, np.array(bps)))
 	bpassABG.append(bpassX[1:].T)	
-	# for x in range(0,4):	bpassABG.append(bpassX[1:].T)
-
-	# 	bpastemp = butter_bandpass_filter(data.T[1][have_header:],cutoff[x],cutoff[x+1],128,2)
-	# 	if(np.array_equal(bpassABG,np.zeros(len(column)-1))):
-	# 		bpassABG = np.array(bpastemp)
-	# 	else:
-	# 		bpassABG= vstack((bpassABG,.arra(bpastempy)))
-	# bpass = bpass[1:].Tnp
-	# bpassABG = bpassABG.T
 	return bpassABG
 
