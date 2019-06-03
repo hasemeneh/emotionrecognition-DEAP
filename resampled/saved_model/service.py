@@ -3,16 +3,16 @@ import pickle
 import json
 import pandas as pd
 import numpy as np
-from sklearn.neighbors import KNeighborsClassifier , RadiusNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier 
 from sklearn.metrics import confusion_matrix
 
 valenceModel = None
 arousalModel = None
-class SimpleChat(WebSocket):
+class EmoWebSocket(WebSocket):
 
     def handleMessage(self):
+    	#fungsi ini digunakan untuk menerima data masuk
        #self adalah client yang mengirim data
-       # print(self.data)
        data = np.array(json.loads(self.data)).astype(float)
        data = data[:n_features]
        print(data.shape)
@@ -28,9 +28,6 @@ class SimpleChat(WebSocket):
        data = json.dumps(data.tolist())
        print(data)
        self.sendMessage((u""+data))
-       # for client in clients:
-       #    if client != self:
-       #       client.sendMessage(self.address[0] + u' - ' + self.data)
 
     def handleConnected(self):
        #self adalah client yang terkoneksi
@@ -69,6 +66,6 @@ if __name__ == '__main__':
 	print(confuscious_matrixValence)
 	print("confusion matrix arousal")
 	print(confuscious_matrixArousal)
-	server = SimpleWebSocketServer('127.0.0.1', 8000, SimpleChat)
+	server = SimpleWebSocketServer('127.0.0.1', 8000, EmoWebSocket)
 	server.serveforever()
 

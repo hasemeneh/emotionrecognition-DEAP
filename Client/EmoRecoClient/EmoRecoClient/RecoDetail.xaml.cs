@@ -27,51 +27,57 @@ namespace EmoRecoClient
 			labelNama.Content = data.Nama;
 			if (data.Valence > 0)
 			{
+				// valence tinggi
 				if (data.Arousal > 0)
 				{
+					// arousal tinggi
 					imgActive.Visibility = Visibility.Visible;
-					ArousalLabel.Content = "Active";
-					listPossibleEmotion.Items.Add("Alert");
-					listPossibleEmotion.Items.Add("Excited");
-					listPossibleEmotion.Items.Add("Enthusiastic");
-					listPossibleEmotion.Items.Add("Elated");
-					listPossibleEmotion.Items.Add("Happy");
+					ArousalLabel.Content = "Aktif";
+					listPossibleEmotion.Items.Add("Siaga");
+					listPossibleEmotion.Items.Add("Girang");
+					listPossibleEmotion.Items.Add("Antusias");
+					listPossibleEmotion.Items.Add("Gembiar");
+					listPossibleEmotion.Items.Add("Bahagia");
 
 				}
 				else
 				{
+					// arousal rendah 
 					imgSad.Visibility = Visibility.Visible;
-					ArousalLabel.Content = "Inactive";
-					listPossibleEmotion.Items.Add("Contended");
-					listPossibleEmotion.Items.Add("Serene");
-					listPossibleEmotion.Items.Add("Relaxed");
-					listPossibleEmotion.Items.Add("Calm");
+					ArousalLabel.Content = "Tidak Aktif";
+					listPossibleEmotion.Items.Add("Puas");
+					listPossibleEmotion.Items.Add("Tentram");
+					listPossibleEmotion.Items.Add("Santai");
+					listPossibleEmotion.Items.Add("Tenang");
 				}
 				imgSmile.Visibility = Visibility.Visible;
-				ValenceLabel.Content = "Pleasant";
+				ValenceLabel.Content = "Menyenangkan";
 			}
 			else
 			{
+				// valence rendah
 				if (data.Arousal > 0)
 				{
+					// arousal tinggi
 					imgActive.Visibility = Visibility.Visible;
-					ArousalLabel.Content = "Active";
-					listPossibleEmotion.Items.Add("Tense");
-					listPossibleEmotion.Items.Add("Nervous");
-					listPossibleEmotion.Items.Add("Stressed");
-					listPossibleEmotion.Items.Add("Upset");
+					ArousalLabel.Content = "Aktif";
+					listPossibleEmotion.Items.Add("Tegang");
+					listPossibleEmotion.Items.Add("Gugup");
+					listPossibleEmotion.Items.Add("Stress");
+					listPossibleEmotion.Items.Add("Jengkel");
 				}
 				else
 				{
+					// low arousal
 					imgCalm.Visibility = Visibility.Visible;
-					ArousalLabel.Content = "Inactive";
-					listPossibleEmotion.Items.Add("Sad");
-					listPossibleEmotion.Items.Add("Depressed");
-					listPossibleEmotion.Items.Add("Sluggish");
-					listPossibleEmotion.Items.Add("Bored");
+					ArousalLabel.Content = "Tidak Aktif";
+					listPossibleEmotion.Items.Add("Sedih");
+					listPossibleEmotion.Items.Add("Murung");
+					listPossibleEmotion.Items.Add("Lesu");
+					listPossibleEmotion.Items.Add("Bosan");
 				}
 				imgSad.Visibility = Visibility.Visible;
-				ValenceLabel.Content = "Unpleasant";
+				ValenceLabel.Content = "Tidak Menyenangkan";
 			}
 		}
 	}

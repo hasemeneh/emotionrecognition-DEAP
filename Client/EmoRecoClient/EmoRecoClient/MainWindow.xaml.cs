@@ -21,6 +21,7 @@ namespace EmoRecoClient
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
+	/// digunakan untuk membaca file csv yang kemudian  
 	/// </summary>
 	public partial class MainWindow : Window
 	{
@@ -32,14 +33,17 @@ namespace EmoRecoClient
 		public MainWindow()
 		{
 			InitializeComponent();
+			// inisialisasi web socket client
 			ws = new WebSocket("ws://127.0.0.1:8000/");
 			ws.OnMessage += onMessage;
+			// inisialisasi json parser
 			serializer = new JavaScriptSerializer();
 		}
 		private void onMessage(object sender, MessageEventArgs e)
 		{
 			if (e.IsText)
 			{
+				// mem-parse json
 				var data = new JavaScriptSerializer().Deserialize<double[]>(e.Data);
 				var individualModel = new IndividualModel()
 				{
@@ -51,6 +55,7 @@ namespace EmoRecoClient
 			}
 			if(listPrediksi.Count == listData.Count)
 			{
+				// memanggil forrm ListHasilKlasifikasi di main thread
 				Application.Current.Dispatcher.Invoke((Action)delegate {
 					ListHasilKlasifikasi listHasilKlasifikasi = new ListHasilKlasifikasi(listPrediksi);
 					listHasilKlasifikasi.Show();
@@ -65,14 +70,14 @@ namespace EmoRecoClient
 			dlg.Filter = "comma separated value Files (*.csv)|*.csv";
 
 
-			// Display OpenFileDialog by calling ShowDialog method 
+			// Tampilkan OpenFileDialog
 			Nullable<bool> result = dlg.ShowDialog();
 
 
-			// Get the selected file name and display in a TextBox 
+			// Ambil file dan tampilkan alamat di text box
 			if (result == true)
 			{
-				// Open document 
+				// Baca Document
 				string filename = dlg.FileName;
 				namaFile.Text = filename;
 				using (var reader = new StreamReader(filename))
@@ -85,6 +90,7 @@ namespace EmoRecoClient
 						var values = line.Split(',');
 						listData.Add(values);
 					}
+					// tampilkan jumlah data
 					jmlData.Text = "" + listData.Count;
 				}
 			}

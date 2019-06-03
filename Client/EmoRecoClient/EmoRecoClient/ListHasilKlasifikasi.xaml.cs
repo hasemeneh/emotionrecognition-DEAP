@@ -23,12 +23,14 @@ namespace EmoRecoClient
 		public ListHasilKlasifikasi(List<IndividualModel> data)
 		{
 			InitializeComponent();
+			// memasukkan data ke datagrid
 			this.data = data;
 			datagridList.ItemsSource = this.data;
 		}
 
 		private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
+			// menjalankan form RecoDetail
 			RecoDetail recoDetail = new RecoDetail(data.ElementAt(datagridList.SelectedIndex));
 			recoDetail.ShowDialog();
 		}

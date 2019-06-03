@@ -8,6 +8,7 @@ namespace EmoRecoClient
 {
     public class IndividualModel
     {
+		// model untuk menampung data
 		string nama;
 		int arousal;
 		int valence;
@@ -16,6 +17,7 @@ namespace EmoRecoClient
 		public int Arousal { get => arousal; set => arousal = value; }
 		public int Valence { get => valence; set => valence = value; }
 		public string Summary { get {
+				// ringkasan Emosi
 				string summary="";
 				if (arousal>0)
 				{
